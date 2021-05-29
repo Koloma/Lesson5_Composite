@@ -11,6 +11,7 @@ class TaskTableViewCell: UITableViewCell {
 
     static let identifier = String(describing: TaskTableViewCell.self)
     static let nib = UINib(nibName: identifier, bundle: nil)
+    static let cellHeight = CGFloat(40)
 
     @IBOutlet weak var taskNameLable: UILabel!
     @IBOutlet weak var countTaskLable: UILabel!
