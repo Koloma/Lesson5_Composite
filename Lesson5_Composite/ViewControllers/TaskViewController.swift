@@ -9,8 +9,11 @@ import UIKit
 
 final class TaskViewController: UIViewController {
 
-    private var tableView = UITableView()
+    private enum ImageSystemName: String{
+        case plus = "plus.app"
+    }
     
+    private var tableView = UITableView()
     private var taskList: TaskList
     
     init(taskList: TaskList) {
@@ -20,7 +23,6 @@ final class TaskViewController: UIViewController {
     }
     
     required init?(coder: NSCoder) {
-        print("required init?(coder: NSCoder)")
         self.taskList = TaskList()
         super.init(coder: coder)
     }
@@ -28,23 +30,29 @@ final class TaskViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView = createTableView()
-        self.view.addSubview(tableView)
-        tableView.reloadData()
-        
-        
-        let button1 = UIBarButtonItem(image: UIImage(systemName: "plus.app"), style: .plain, target: self, action: #selector(tapAddButton))
-        self.navigationItem.rightBarButtonItem  = button1
-        self.navigationItem.title = taskList.name
-        
-        
+        configNavigation()
+        configTableView()
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tableView.reloadData()
     }
     
+    private func configTableView(){
+        tableView = createTableView()
+        self.view.addSubview(tableView)
+    }
+    
+    private func configNavigation(){
+        let button1 = UIBarButtonItem(image: UIImage(systemName: ImageSystemName.plus.rawValue),
+                                      style: .plain,
+                                      target: self,
+                                      action: #selector(tapAddButton))
+        self.navigationItem.rightBarButtonItem  = button1
+        self.navigationItem.title = taskList.name
+    }
+
     @objc func tapAddButton(_ sender: Any) {
         taskList.list.append(ConcreteTask(name: "New task \(taskList.list.count)"))
         tableView.reloadData()
@@ -72,7 +80,6 @@ extension TaskViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TaskTableViewCell.identifier, for: indexPath) as? TaskTableViewCell
         else { return UITableViewCell() }
-        
         cell.configureCell(task: taskList.list[indexPath.row])
         return cell
         

@@ -9,9 +9,8 @@ import UIKit
 
 class TaskTableViewCell: UITableViewCell {
 
-    static let nib = UINib(nibName: "TaskTableViewCell", bundle: nil)
-    static let identifier = "TaskTableViewCell"
-    
+    static let identifier = String(describing: TaskTableViewCell.self)
+    static let nib = UINib(nibName: identifier, bundle: nil)
 
     @IBOutlet weak var taskNameLable: UILabel!
     @IBOutlet weak var countTaskLable: UILabel!
